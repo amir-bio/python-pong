@@ -36,8 +36,7 @@ ball.shape("square")
 ball.color("white")
 ball.penup()
 ball.goto(0, 0)
-ball.dx = 0.1
-ball.dy = 0.1
+ball.dx = ball.dy = 2
 
 pen = turtle.Turtle()
 pen.speed(0)
@@ -45,7 +44,7 @@ pen.color("white")
 pen.penup()
 pen.hideturtle()
 pen.goto(0, 260)
-pen.write(f"Play A: {paddle_a.score} Player B: {paddle_b.score}", align="center", font=("Courier", 24 , "normal"))
+pen.write(f"Player A: {paddle_a.score} Player B: {paddle_b.score}", align="center", font=("Courier", 24 , "normal"))
 
 
 def paddle_up(paddle):
@@ -64,8 +63,8 @@ wm.onkeypress(lambda: paddle_down(paddle_a), "s")
 wm.onkeypress(lambda: paddle_up(paddle_b), "Up")
 wm.onkeypress(lambda: paddle_down(paddle_b), "Down")
 
-# main game loop
-while True:
+def animate():
+    """"Animate a frame of the game with all the required logic and call ontimer to animate next frame"""
     wm.update()
 
     ball.setx(ball.xcor() + ball.dx)
@@ -90,3 +89,8 @@ while True:
 
     if ball.xcor() < -340 and  ball.xcor() > -350 and paddle_a.ycor() - 40 < ball.ycor() < paddle_a.ycor() + 40:
         ball.dx *= -1
+
+    wm.ontimer(animate, 10) # call animate again after 10ms (=> 100 fps)
+
+wm.ontimer(animate)
+wm.mainloop()
