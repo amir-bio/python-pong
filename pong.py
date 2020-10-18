@@ -17,6 +17,7 @@ paddle_a.color("white")
 paddle_a.shapesize(stretch_wid=5, stretch_len=1)
 paddle_a.penup() # don't draw a line as it moves
 paddle_a.goto(-350, 0)
+paddle_a.score = 0
 
 # right paddle
 paddle_b = turtle.Turtle()
@@ -26,6 +27,7 @@ paddle_b.color("white")
 paddle_b.shapesize(stretch_wid=5, stretch_len=1)
 paddle_b.penup()
 paddle_b.goto(350, 0)
+paddle_b.score = 0
 
 # ball
 ball = turtle.Turtle()
@@ -36,6 +38,15 @@ ball.penup()
 ball.goto(0, 0)
 ball.dx = 0.1
 ball.dy = 0.1
+
+pen = turtle.Turtle()
+pen.speed(0)
+pen.color("white")
+pen.penup()
+pen.hideturtle()
+pen.goto(0, 260)
+pen.write(f"Play A: {paddle_a.score} Player B: {paddle_b.score}", align="center", font=("Courier", 24 , "normal"))
+
 
 def paddle_up(paddle):
     y = paddle.ycor()
