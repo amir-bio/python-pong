@@ -34,8 +34,8 @@ ball.shape("square")
 ball.color("white")
 ball.penup()
 ball.goto(0, 0)
-ball.dx = 2
-ball.dy = 2
+ball.dx = 0.1
+ball.dy = 0.1
 
 def paddle_up(paddle):
     y = paddle.ycor()
@@ -49,10 +49,33 @@ wm.listen()
 wm.onkeypress(lambda: paddle_up(paddle_a), "w")
 wm.onkeypress(lambda: paddle_down(paddle_a), "s")
 
+# arrow keys for the righty paddle
 wm.onkeypress(lambda: paddle_up(paddle_b), "Up")
 wm.onkeypress(lambda: paddle_down(paddle_b), "Down")
 
 # main game loop
 while True:
     wm.update()
-    wm
+
+    ball.setx(ball.xcor() + ball.dx)
+    ball.sety(ball.ycor() + ball.dy)
+
+    # border check - bounce from top and bottom
+    if ball.ycor() > 290:
+        ball.sety(290)
+        ball.dy *= -1
+    if ball.ycor() < -290:
+        ball.sety(-290)
+        ball.dy *= -1
+
+    # if the ball has gone past the paddle go to the center and reverse direction
+    if ball.xcor() > 390 or  ball.xcor() < -390:
+        ball.goto(0, 0)
+        ball.dx *= -1
+
+    # handle collision with paddle
+    if ball.xcor() > 340 and  ball.xcor() < 350 and paddle_b.ycor() - 40 < ball.ycor() < paddle_b.ycor() + 40:
+        ball.dx *= -1
+
+    if ball.xcor() < -340 and  ball.xcor() > -350 and paddle_a.ycor() - 40 < ball.ycor() < paddle_a.ycor() + 40:
+        ball.dx *= -1
