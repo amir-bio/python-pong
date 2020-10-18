@@ -1,4 +1,5 @@
 import turtle
+import winsound
 
 def make_paddle():
     paddle = turtle.Turtle()
@@ -51,6 +52,10 @@ def paddle_up(paddle):
 def paddle_down(paddle):
     paddle.sety(paddle.ycor()-20)
 
+def bounce_sound():
+    # play the sound asynchronously to ensure the main animation is not paused/delayed
+    winsound.PlaySound("bounce.wav", winsound.SND_ASYNC)
+
 wm.listen()
 wm.onkeypress(lambda: paddle_up(paddle_a), "w")
 wm.onkeypress(lambda: paddle_down(paddle_a), "s")
@@ -72,12 +77,14 @@ def animate():
     if ball.ycor() > 290:
         ball.sety(290)
         ball.dy *= -1
+        bounce_sound()
 
     if ball.ycor() < -290:
         ball.sety(-290)
         ball.dy *= -1
+        bounce_sound()
 
-    # if the ball has gone past the paddle go to the center and reverse direction
+    # if the ball has gone past the paddles go to the center and reverse direction
     if ball.xcor() > 390:
         ball.goto(0, 0)
         ball.dx *= -1
@@ -91,9 +98,11 @@ def animate():
     # handle collision with paddle
     if ball.xcor() > 340 and  ball.xcor() < 350 and paddle_b.ycor() - 40 < ball.ycor() < paddle_b.ycor() + 40:
         ball.dx *= -1
+        bounce_sound()
 
     if ball.xcor() < -340 and  ball.xcor() > -350 and paddle_a.ycor() - 40 < ball.ycor() < paddle_a.ycor() + 40:
         ball.dx *= -1
+        bounce_sound()
 
     wm.ontimer(animate, 10) # call animate again after 10ms (=> 100 fps)
 
