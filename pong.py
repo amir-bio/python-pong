@@ -44,8 +44,6 @@ pen.color("white")
 pen.penup()
 pen.hideturtle()
 pen.goto(0, 260)
-pen.write(f"Player A: {paddle_a.score} Player B: {paddle_b.score}", align="center", font=("Courier", 24 , "normal"))
-
 
 def paddle_up(paddle):
     y = paddle.ycor()
@@ -66,6 +64,8 @@ wm.onkeypress(lambda: paddle_down(paddle_b), "Down")
 def animate():
     """"Animate a frame of the game with all the required logic and call ontimer to animate next frame"""
     wm.update()
+    pen.clear()
+    pen.write(f"Player A: {paddle_a.score} Player B: {paddle_b.score}", align="center", font=("Courier", 24 , "normal"))
 
     ball.setx(ball.xcor() + ball.dx)
     ball.sety(ball.ycor() + ball.dy)
@@ -79,9 +79,15 @@ def animate():
         ball.dy *= -1
 
     # if the ball has gone past the paddle go to the center and reverse direction
-    if ball.xcor() > 390 or  ball.xcor() < -390:
+    if ball.xcor() > 390:
         ball.goto(0, 0)
         ball.dx *= -1
+        paddle_a.score += 1
+
+    if ball.xcor() < -390:
+        ball.goto(0, 0)
+        ball.dx *= -1
+        paddle_b.score += 1
 
     # handle collision with paddle
     if ball.xcor() > 340 and  ball.xcor() < 350 and paddle_b.ycor() - 40 < ball.ycor() < paddle_b.ycor() + 40:
