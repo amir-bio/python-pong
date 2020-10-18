@@ -1,5 +1,16 @@
 import turtle
 
+def make_paddle():
+    paddle = turtle.Turtle()
+    paddle.speed(0) # set speed of animation to max
+    paddle.shape("square")
+    paddle.color("white")
+    paddle.shapesize(stretch_wid=5, stretch_len=1)
+    paddle.penup() # don't draw a line as it moves
+    # store score for each player on paddle as paddle represents the player
+    paddle.score = 0
+    return paddle
+
 wm = turtle.Screen()
 wm.title("Pong")
 wm.bgcolor("black")
@@ -10,24 +21,12 @@ wm.setup(width=800, height=600)
 wm.tracer(0)
 
 # left paddle
-paddle_a = turtle.Turtle()
-paddle_a.speed(0) # set speed of animation to max
-paddle_a.shape("square")
-paddle_a.color("white")
-paddle_a.shapesize(stretch_wid=5, stretch_len=1)
-paddle_a.penup() # don't draw a line as it moves
+paddle_a = make_paddle()
 paddle_a.goto(-350, 0)
-paddle_a.score = 0
 
 # right paddle
-paddle_b = turtle.Turtle()
-paddle_b.speed(0) # set speed of animation to max
-paddle_b.shape("square")
-paddle_b.color("white")
-paddle_b.shapesize(stretch_wid=5, stretch_len=1)
-paddle_b.penup()
+paddle_b = make_paddle()
 paddle_b.goto(350, 0)
-paddle_b.score = 0
 
 # ball
 ball = turtle.Turtle()
@@ -38,6 +37,7 @@ ball.penup()
 ball.goto(0, 0)
 ball.dx = ball.dy = 2
 
+# score text
 pen = turtle.Turtle()
 pen.speed(0)
 pen.color("white")
@@ -46,12 +46,10 @@ pen.hideturtle()
 pen.goto(0, 260)
 
 def paddle_up(paddle):
-    y = paddle.ycor()
-    paddle.sety(y+20)
+    paddle.sety(paddle.ycor()+20)
 
 def paddle_down(paddle):
-    y = paddle.ycor()
-    paddle.sety(y-20)
+    paddle.sety(paddle.ycor()-20)
 
 wm.listen()
 wm.onkeypress(lambda: paddle_up(paddle_a), "w")
@@ -74,6 +72,7 @@ def animate():
     if ball.ycor() > 290:
         ball.sety(290)
         ball.dy *= -1
+
     if ball.ycor() < -290:
         ball.sety(-290)
         ball.dy *= -1
